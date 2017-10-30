@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<script>
+$(document).ready(function() {
+	$.ajax({
+    url: "http://www.accessibilitycourse.com/support/rekognition.php?url=",
+ 
+    // The name of the callback parameter, as specified by the YQL service
+    jsonp: "callback",
+ 
+    // Tell jQuery we're expecting JSONP
+    dataType: "jsonp",
+ 
+    // Tell YQL what we want and that we want JSON
+    data: {
+        url: $(img).attr("src");
+    },
+ 
+    // Work with the response
+    success: function( response ) {
+        console.log( response ); // server response
+        //$("img").attr("alt", response) more to write
+    }
+});
+	var img = $("img")[0];
+
+	if($(img).is(":not(img[alt])")) { //image does not have alt text
+		console.log("no alt attribute")
+	}
+	else if ($(img).attr("alt")==""){ //image has empty alt text
+		console.log("alt is empty string")
+	}
+	else { //image has some text
+		console.log("alt has some text")
+	}
+})
+
+</script>
+<body>
+</body>
+</html>

@@ -2,8 +2,9 @@ var totalImagesOnScreen = 0;
 var altTextArray = [];
 
 $(document).ready(function() {
-	//labelImage();
-	labelImageTesseract();
+	//CHOOSE IMAGE DESCRIPTION MODE
+	labelImage();
+	//labelImageTesseract();
 });
 
 function labelImage() {
@@ -31,15 +32,8 @@ function labelImage() {
 		    		}
 		    		console.log(newAlt)
 
-		    		//image does not have alt text
-	  				if(altText == undefined) { 
-	  					console.log(" image : " + $(this))
-	  					console.log(newAlt)
-	  					$().attr("alt", newAlt)
-	  				} 
-	  				//image has empty alt text
-	  				else if(altText == "") {
-	  					console.log("empty alt") 
+		    		//image does not have alt text or image has empty alt text
+	  				if(altText == undefined || altText == "") { 
 	  					$(this).attr("alt", newAlt)
 	  				} 
 		    	}
@@ -49,62 +43,20 @@ function labelImage() {
 }
 
 function labelImageTesseract() {
-	//$('img').each(function() {
 	for(var i=0; i<getNumberImages(); i++) {
-		//var altText = $(this).attr("alt");
-		var altText = $($("img")[i]).attr("alt")
-		var image = $($("img")[i])
-		console.log("aaaa" + image);
-		
-
 		Tesseract.recognize($($("img")[i]).attr("src"))
-		//Tesseract.recognize($(this).attr("src"))
     	.progress(message => console.log(message))
     	.catch(err => console.error(err))
     	.then(result => console.log(result))
     	.finally(function(resultOrError) {
-    		newAlt = resultOrError.text;
-    		console.log(newAlt);
-
-    		altTextArray.push(newAlt);
-    		console.log("aroon : " + altTextArray);
-
+    		altTextArray.push(resultOrError.text);
     		for(var j=0; j<i; j++) {
-    			($($("img")[j])).attr("alt", altTextArray[j]);
-    		}
-
-    		//console.log($($("img")[i]))
-		    //image does not have alt text
-	  		if(altText == undefined) { 
-	  			//console.log("no alt");
-	  			//image.attr("alt", altTextArray[i])
-	  		} 
-	  		//image has empty alt text
-	  		else if(altText == "") {
-	  			//console.log("empty alt");
-	  			//console.log("aroon  ...... "+image)
-	  			//image.attr("alt", altTextArray[i])
-	  		}  
-	  		console.log(image.src);
-	  		image.attr("alt", altTextArray[i]);
+    			var altText = $($("img")[j]).attr("alt");
+    			if(altText == undefined || altText == "") {
+    				($($("img")[j])).attr("alt", altTextArray[j]);
+    			}
+    		}	  		
     	})    	
-	}	
-}
-
-
-function tessaTessaTesseract() {
-
-	for(var i=0; i<totalImagesOnScreen; i++) {
-		Tesseract.recognize($($("img")[i]).attr("src"))
-    	.progress(message => console.log(message))
-    	.catch(err => console.error(err))
-    	.then(result => console.log(result))
-    	.finally(function(resultOrError) {
-	    	altText = resultOrError.text;   
-	    	altText = altTextReadFromImage.toString();
-			altText = altTextReadFromImage.trim();  
-			altTextReadFromImageList.push(altText);     	
-    	})
 	}	
 }
 
